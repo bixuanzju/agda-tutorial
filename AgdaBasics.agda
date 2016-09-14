@@ -32,7 +32,7 @@ cons x vs ! fsuc n =  vs ! n
 
 tabulate : {n : ℕ} {A : Set} → (Fin n → A) → Vec A n
 tabulate {zero} f = nil
-tabulate {suc n} f =  cons (f fzero) (tabulate (\x -> f (fsuc x)))
+tabulate {suc n} f =  cons (f fzero) (tabulate (λ x -> f (fsuc x)))
 
 data False : Set where
 
@@ -136,12 +136,12 @@ record Monad (M : Set → Set) : Set1 where
 
   mapLM : {A B : Set} → (A → M B) → List A → M (List B)
   mapLM f [] =  return []
-  mapLM f (x ∷ xs) =  f x >>= (\y -> mapLM f xs >>= \ys -> return (y ∷ ys))
+  mapLM f (x ∷ xs) =  f x >>= (λ y -> mapLM f xs >>= λ ys -> return (y ∷ ys))
 
 -- Ex 2.2
 lem-!-tab : forall {A n} (f : Fin n → A) (i : Fin n) →  (tabulate f) ! i  == f i
 lem-!-tab f fzero = refl
-lem-!-tab f (fsuc i) = lem-!-tab (\s → f (fsuc s)) i
+lem-!-tab f (fsuc i) = lem-!-tab (λ x → f (fsuc x)) i
 
 lem-tab-! : forall {A n} (xs : Vec A n) → tabulate (_!_ xs) == xs
 lem-tab-! nil = refl
@@ -189,4 +189,4 @@ complement {xs = x ∷ xs} (skip zs) =  x :: complement zs
 
 subLists : {A : Set} (xs : List A) → List (SubList xs)
 subLists [] = [ [] ]
-subLists (x ∷ xs) = concatMap (\s → skip s ∷ [ x :: s ]) (subLists xs)
+subLists (x ∷ xs) = concatMap (λ s → skip s ∷ [ x :: s ]) (subLists xs)
