@@ -98,7 +98,7 @@ infix 20 _⊆_
 data _⊆_ {A : Set} : List A → List A → Set where
   stop : [] ⊆ []
   left : forall {xs y ys} → xs ⊆ ys → xs ⊆ (y ∷ ys)
-  keep : forall {x y xs ys} → xs ⊆ ys → (x ∷ xs) ⊆ (y ∷ ys)
+  keep : forall {x xs ys} → xs ⊆ ys → (x ∷ xs) ⊆ (x ∷ ys)
 
 lem-filter : {A : Set} (p : A → 𝔹) (xs : List A) → filterL p xs ⊆ xs
 lem-filter p [] = stop
@@ -157,8 +157,8 @@ lem-tab-! (cons x xs) | .xs | refl = refl
 ⊆-trans stop q = q
 ⊆-trans (left p) (left q) =  left (⊆-trans (left p) q)
 ⊆-trans (left p) (keep q) =  left (⊆-trans p q)
-⊆-trans (keep p) (left q) =  keep (⊆-trans (left p) q)
-⊆-trans (keep p) (keep q) = keep (⊆-trans p q)
+⊆-trans (keep p) (left q) =  left (⊆-trans (keep p) q)
+⊆-trans (keep p) (keep q) =  keep (⊆-trans p q)
 
 infixr 30 _::_
 data SubList {A : Set} : List A → Set where
