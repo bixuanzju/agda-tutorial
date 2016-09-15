@@ -97,8 +97,8 @@ equal? (suc n) (suc m) | neq x = neq (s≠s x)
 infix 20 _⊆_
 data _⊆_ {A : Set} : List A → List A → Set where
   stop : [] ⊆ []
-  left : forall {xs y ys} → xs ⊆ ys → xs ⊆ (y ∷ ys)
-  keep : forall {x xs ys} → xs ⊆ ys → (x ∷ xs) ⊆ (x ∷ ys)
+  left : ∀ {xs y ys} → xs ⊆ ys → xs ⊆ (y ∷ ys)
+  keep : ∀ {x xs ys} → xs ⊆ ys → (x ∷ xs) ⊆ (x ∷ ys)
 
 lem-filter : {A : Set} (p : A → 𝔹) (xs : List A) → filterL p xs ⊆ xs
 lem-filter p [] = stop
@@ -139,11 +139,11 @@ record Monad (M : Set → Set) : Set1 where
   mapLM f (x ∷ xs) =  f x >>= (λ y -> mapLM f xs >>= λ ys -> return (y ∷ ys))
 
 -- Ex 2.2
-lem-!-tab : forall {A n} (f : Fin n → A) (i : Fin n) →  (tabulate f) ! i  == f i
+lem-!-tab : ∀ {A n} (f : Fin n → A) (i : Fin n) →  (tabulate f) ! i  == f i
 lem-!-tab f fzero = refl
 lem-!-tab f (fsuc i) = lem-!-tab (λ x → f (fsuc x)) i
 
-lem-tab-! : forall {A n} (xs : Vec A n) → tabulate (_!_ xs) == xs
+lem-tab-! : ∀ {A n} (xs : Vec A n) → tabulate (_!_ xs) == xs
 lem-tab-! nil = refl
 lem-tab-! (cons x xs) with tabulate (_!_ xs) | lem-tab-! xs
 lem-tab-! (cons x xs) | .xs | refl = refl
@@ -163,8 +163,8 @@ lem-tab-! (cons x xs) | .xs | refl = refl
 infixr 30 _::_
 data SubList {A : Set} : List A → Set where
   [] : SubList []
-  _::_ : forall x {xs} → SubList xs → SubList (x ∷ xs)
-  skip : forall {x xs} → SubList xs → SubList (x ∷ xs)
+  _::_ : ∀ x {xs} → SubList xs → SubList (x ∷ xs)
+  skip : ∀ {x xs} → SubList xs → SubList (x ∷ xs)
 
 forget : {A : Set} {xs : List A} → SubList xs → List A
 forget [] = []
