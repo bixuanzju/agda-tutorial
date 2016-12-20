@@ -71,7 +71,7 @@ _!_ : {A : Set} (xs : List A) (n : ℕ) → Lookup xs n
 [] ! n =  outside n
 (x ∷ xs) ! zero =  inside x hd
 (x ∷ xs) ! suc n with xs ! n
-(x₁ ∷ xs) ! suc .(index p) | inside x p =  inside x (tl p)
+(_ ∷ xs) ! suc .(index p) | inside x p =  inside x (tl p)
 (x ∷ xs) ! suc .(length xs + m) | outside m =  outside m
 
 
@@ -182,7 +182,7 @@ difference n .(n + suc k) | less k =  suc k
 difference .(m + suc k) m | more k = suc k
 difference m .m | same = zero
 
--- 3.2
+-- Ex 3.3
 lemma-All-∈ : ∀ {A x xs} {P : A → Set} → All P xs → x ∈ xs → P x
 lemma-All-∈ all[] ()
 lemma-All-∈ (x₂ :all: p) hd = x₂
